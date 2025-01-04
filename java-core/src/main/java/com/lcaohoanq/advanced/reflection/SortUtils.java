@@ -5,9 +5,6 @@ import java.util.List;
 
 public class SortUtils {
 
-    private SortUtils() {
-    }
-
     /**
      * Sort a list of objects based on a single criterion
      *
