@@ -7,14 +7,18 @@ on:
     branches: [ "master" ]
 
 jobs:
-
-  # Job 1: Running test case on testing project
-  run-unit-test: 
+  run-tests:
     runs-on: ubuntu-24.04
-
+    strategy:
+      matrix:
+        project:
+          - testing/jUnit/01-SumTest
+          - web_frameworks/SpringBoot
     steps:
+      # Step 1: Checkout the code
       - uses: actions/checkout@v4
 
+      # Step 2: Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -22,34 +26,18 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Navigate to the SpringBoot project directory
-      - name: Change directory to testing project
-        run: cd testing/jUnit/01-SumTest
-
-      # Run tests in the nested Spring Boot project
-      - name: Run All Unit Tests
-        run: mvn -B clean test --file testing/jUnit/01-SumTest/pom.xml
-
-  # Job 2: Running test case on web_frameworks/SpringBoot
-  run-unit-test-sp: 
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      # Step 3: Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      # Navigate to the SpringBoot project directory
-      - name: Change directory to SpringBoot project
-        run: cd web_frameworks/SpringBoot
-
-      # Run tests in the nested Spring Boot project
-      - name: Run All Unit Tests
-        run: mvn -B clean test --file web_frameworks/SpringBoot/pom.xml
+      # Step 4: Run Unit Tests
+      - name: Run Unit Tests for ${{ matrix.project }}
+        run: mvn -B clean test --file ${{ matrix.project }}/pom.xml
         env:
-          SPRING_PROFILES_ACTIVE: test
+          SPRING_PROFILES_ACTIVE: ${{ contains(matrix.project, 'SpringBoot') && 'test' || '' }}
+
