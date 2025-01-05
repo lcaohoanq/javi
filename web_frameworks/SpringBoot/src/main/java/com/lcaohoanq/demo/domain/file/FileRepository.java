@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo.file;
+package com.lcaohoanq.demo.domain.file;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

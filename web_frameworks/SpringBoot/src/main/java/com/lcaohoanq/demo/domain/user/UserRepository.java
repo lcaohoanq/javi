@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo;
+package com.lcaohoanq.demo.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

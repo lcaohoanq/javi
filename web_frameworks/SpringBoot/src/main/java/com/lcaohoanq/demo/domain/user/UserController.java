@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo;
+package com.lcaohoanq.demo.domain.user;
 
 import jakarta.validation.Valid;
 import java.util.List;

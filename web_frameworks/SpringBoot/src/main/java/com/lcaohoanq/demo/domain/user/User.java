@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo;
+package com.lcaohoanq.demo.domain.user;
 
 import com.lcaohoanq.demo.base.BaseEntity;
 import jakarta.persistence.Column;

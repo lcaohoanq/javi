@@ -1,23 +1,25 @@
-package com.lcaohoanq.demo.file;
+package com.lcaohoanq.demo.domain.file;
 
+import jakarta.transaction.Transactional;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Slf4j
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class FileService {
 
     private final FileRepository fileRepository;
-
-    public FileService(FileRepository fileRepository) {
-        this.fileRepository = fileRepository;
-    }
 
     public File saveFile(MultipartFile multipartFile) throws IOException {
         // Generate a unique file name
@@ -38,13 +40,13 @@ public class FileService {
         Files.write(filePath, multipartFile.getBytes(), StandardOpenOption.CREATE);
 
         // Persist file metadata to the database
-        File file = File.builder()
-            .fileName(uniqueFileName)
-            .fileType(multipartFile.getContentType())
-            .fileSize(multipartFile.getSize())
-            .fileContent(filePath.toString())  // Save the file path instead of content
-            .build();
-
-        return fileRepository.save(file);
+        return fileRepository.save(
+            File.builder()
+                .fileName(uniqueFileName)
+                .fileType(multipartFile.getContentType())
+                .fileSize(multipartFile.getSize())
+                .fileContent(
+                    filePath.toString())  // Save the file path instead of content
+                .build());
     }
 }

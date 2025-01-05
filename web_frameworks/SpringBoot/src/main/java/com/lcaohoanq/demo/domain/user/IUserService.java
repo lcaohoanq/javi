@@ -1,6 +1,4 @@
-package com.lcaohoanq.demo;
-
-import java.util.Optional;
+package com.lcaohoanq.demo.domain.user;
 
 public interface IUserService {
 

@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo.file;
+package com.lcaohoanq.demo.domain.file;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

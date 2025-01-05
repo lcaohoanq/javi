@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo;
+package com.lcaohoanq.demo.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
