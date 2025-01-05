@@ -13,7 +13,7 @@ jobs:
       matrix:
         project:
           - testing/jUnit/01-SumTest
-          - testing/jUnit/spring-boot-testing
+          - testing/jUnit/spb-testing
           - web_frameworks/SpringBoot
     steps:
       # Step 1: Checkout the code
