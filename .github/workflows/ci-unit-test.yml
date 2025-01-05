@@ -29,8 +29,6 @@ jobs:
       # Run tests in the nested Spring Boot project
       - name: Run All Unit Tests
         run: mvn -B clean test --file testing/jUnit/01-SumTest/pom.xml
-        env:
-          SPRING_PROFILES_ACTIVE: test
 
   # Job 2: Running test case on web_frameworks/SpringBoot
   run-unit-test-sp: 
