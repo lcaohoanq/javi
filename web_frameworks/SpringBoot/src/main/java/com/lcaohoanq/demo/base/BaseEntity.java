@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo;
+package com.lcaohoanq.demo.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
