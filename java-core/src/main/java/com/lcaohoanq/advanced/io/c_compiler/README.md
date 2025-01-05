@@ -7,6 +7,17 @@ gcc -shared -fPIC \
   -o libsum.so \
   /media/lcaohoanq/SSD-DATA/PROJECT/Java-Issues/java-core/src/main/java/com/lcaohoanq/advanced/io/c_compiler/sum.c
 ```
+
+- Time measurement:
+
+```zsh
+time gcc -shared -fPIC \
+  -I/usr/lib/jvm/java-17-openjdk-amd64/include \
+  -I/usr/lib/jvm/java-17-openjdk-amd64/include/linux \
+  -o libsum.so \
+  /media/lcaohoanq/SSD-DATA/PROJECT/Java-Issues/java-core/src/main/java/com/lcaohoanq/advanced/io/c_compiler/sum.c
+```
+
 - After this above command, you will have a shared library named libsum.so in the current directory. You can now use this library in your Java code.
 
 ```zsh
