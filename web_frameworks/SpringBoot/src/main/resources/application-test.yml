@@ -1,0 +1,58 @@
+server:
+  port: 4000
+
+api:
+  prefix: /api/v1
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    root: info
+    org.springframework: warn
+    org.hibernate: warn
+    springframework.security: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    path: ${LOG_PATH:logs}
+    name: ${LOG_PATH:logs}/application.log
+
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: ${api.prefix}/swagger-ui.html
+    enabled: true
+    disable-swagger-default-url: true
+    security:
+      basic:
+        enabled: true
+  api-docs:
+    path: ${api.prefix}/api-docs
+    enabled: true
+  show-actuator: true
+  paths-to-match: ${api.prefix}/**
+
+#health check
+management:
+  endpoints:
+    web:
+      base-path: /api/v1/actuator
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
