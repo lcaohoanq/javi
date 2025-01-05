@@ -1,6 +1,12 @@
 package com.lcaohoanq.advanced.io.c_compiler;
 
+import com.lcaohoanq.advanced.io.c_compiler.model.Submission;
+import com.lcaohoanq.advanced.io.c_compiler.model.Submission.SubmissionStatus;
+import com.lcaohoanq.advanced.io.c_compiler.model.Testcase;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class Sum {
 
@@ -38,29 +44,87 @@ public class Sum {
         return (endTime - startTime);                 // Return time in milliseconds
     }
 
+    // Execute test cases and return results
+    private static void executeTestCases(Submission submission, List<Testcase> testcases) {
+        Sum sumObj = new Sum();
+
+        int passed = 0;
+        StringBuilder testCaseResults = new StringBuilder();
+
+        for (Testcase testcase : testcases) {
+            // Split input to get integer values
+            String[] inputs = testcase.input().split(" ");
+            int a = Integer.parseInt(inputs[0]);
+            int b = Integer.parseInt(inputs[1]);
+
+            // Measure execution time
+            long startTime = System.currentTimeMillis();
+            int result = sumObj.sum(a, b); // Call the native method
+            long endTime = System.currentTimeMillis();
+            long executionTime = endTime - startTime;
+
+            // Check if output matches expected result
+            boolean isCorrect = Integer.toString(result).equals(testcase.output());
+
+            // Log test case result
+            testCaseResults.append("Test Case ")
+                .append(testcase.id()).append(": ")
+                .append(isCorrect ? "PASSED" : "FAILED")
+                .append(" (Execution time: ").append(executionTime).append(" ms)\n");
+
+            // Track results
+            if (isCorrect) {
+                passed++;
+            }
+        }
+
+        // Update submission with results
+        submission.setTestcasePassed(passed);
+        submission.setTestCaseResults(testCaseResults.toString());
+        submission.setStatus(
+            passed == testcases.size() ? SubmissionStatus.ACCEPTED : SubmissionStatus.WRONG_ANSWER);
+    }
+
     // Main method to compile, run, and test the sum function
     public static void main(String[] args) {
         try {
+            // Create a new submission
+            Submission submission = new Submission();
+            
+            submission.setProgrammingLanguage(Submission.ProgrammingLanguage.C);
+            submission.setAttempt(1);
+            
             // Measure the time for compiling the C code
             System.out.println("Compiling C code...");
             long compilationTime = compileCCode();
-            System.out.println("C code compiled successfully.");
-            System.out.println("Compilation time: " + compilationTime + " milliseconds");
+            submission.setCompilerOutput(
+                "C code compiled successfully in " + compilationTime + " ms");
+            System.out.println(submission.getCompilerOutput());
 
-            // Load and execute the native method
-            Sum sumObj = new Sum();
+            // Create test cases for the sum function
+            List<Testcase> testcases = Arrays.asList(
+                new Testcase(UUID.randomUUID(), "5 3", "8"),
+                new Testcase(UUID.randomUUID(), "10 15", "25"),
+                new Testcase(UUID.randomUUID(), "0 0", "0"),
+                new Testcase(UUID.randomUUID(), "-5 10", "5"),
+                new Testcase(UUID.randomUUID(), "-5 5", "0"),
+                new Testcase(UUID.randomUUID(), "-1 1", "5"),
+                new Testcase(UUID.randomUUID(), "-3 6", "2"),
+                new Testcase(UUID.randomUUID(), "4 1", "5"),
+                new Testcase(UUID.randomUUID(), "-5 10", "6"),
+                new Testcase(UUID.randomUUID(), "-5 10", "7")
+            );
 
-            // Measure the execution time of calling the sum function
-            long startTime = System.currentTimeMillis(); // Start time for execution
-            int result = sumObj.sum(5, 3);               // Call the sum function
-            long endTime = System.currentTimeMillis();   // End time for execution
-            long executionTime = endTime - startTime;    // Calculate execution time
+            // Execute test cases and calculate execution time
+            executeTestCases(submission, testcases);
+
             // Output results
-            System.out.println("Result of 5 + 3 = " + result);
-            System.out.println("Execution time: " + executionTime + " milliseconds");
+            System.out.println("Test case results:");
+            System.out.println(submission.getTestCaseResults());
+            System.out.println(
+                "Test cases passed: " + submission.getTestcasePassed() + "/" + testcases.size());
+            System.out.println("Submission status: " + submission.getStatus());
 
-            // Assert the result is correct
-            assert result == 8 : "Test failed!";
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

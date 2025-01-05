@@ -38,6 +38,7 @@ public class FileService {
 
         // Write the file content to the path
         Files.write(filePath, multipartFile.getBytes(), StandardOpenOption.CREATE);
+        String fileContent = Files.readString(filePath);
 
         // Persist file metadata to the database
         return fileRepository.save(
@@ -45,8 +46,7 @@ public class FileService {
                 .fileName(uniqueFileName)
                 .fileType(multipartFile.getContentType())
                 .fileSize(multipartFile.getSize())
-                .fileContent(
-                    filePath.toString())  // Save the file path instead of content
+                .fileContent(fileContent)  // Save the file path instead of content
                 .build());
     }
 }
