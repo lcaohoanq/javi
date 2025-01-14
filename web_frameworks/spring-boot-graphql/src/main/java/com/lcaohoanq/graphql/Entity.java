@@ -6,8 +6,31 @@ import java.util.Optional;
 
 public interface Entity {
 
+    record User(Integer id, String name, String email, String password) {
+        public static List<User> users = Arrays.asList(
+            new User(1, "Mama Samba", "mamma@example.com", "1"),
+            new User(2, "Jamila", "jamila@gmail.com", "1")
+        );
+    }
+
+    record Publisher(Integer id, String name, Integer authorId, Integer bookId) {
+
+        public static List<Publisher> publishers = Arrays.asList(
+            new Publisher(1, "Mama Samba", 1, 1),
+            new Publisher(2, "Jamila", 2, 2),
+            new Publisher(3, "Allah", 3, 3)
+        );
+
+        public static Optional<Publisher> getPublisherById(Integer id) {
+            return publishers.stream()
+                .filter(b -> b.id.equals(id))
+                .findFirst();
+        }
+    }
+
     record Author(Integer id,
                   String name) {
+
         public static List<Author> authors = Arrays.asList(
             new Author(1, "Mama Samba"),
             new Author(2, "Jamila"),
@@ -26,6 +49,7 @@ public interface Entity {
                 String name,
                 Integer pageCount,
                 Integer authorId) {
+
         public static List<Book> books = Arrays.asList(
             new Book(1, "Quran", 604, 3),
             new Book(2, "Harry Potter", 700, 2),
@@ -39,5 +63,5 @@ public interface Entity {
                 .findFirst();
         }
     }
-    
+
 }

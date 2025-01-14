@@ -1,0 +1,13 @@
+# book.graphqls
+
+type Book {
+    id: ID
+    name: String
+    pageCount: Int
+    author: Author
+}
+
+extend type Query {
+    books: [Book]
+    bookById(id: Int): Book
+}

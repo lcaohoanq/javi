@@ -1,0 +1,22 @@
+type User {
+    id: ID
+    name: String
+    email: String
+    password: String
+}
+
+type AuthResponse {
+    success: Boolean
+    message: String
+    token: String
+}
+
+extend type Query {
+    getAllUsers: [User]
+    getById(id: Int): User
+}
+
+extend type Mutation {
+    register(name: String!, email: String!, password: String!): User
+    login(email: String!, password: String!): AuthResponse
+}
