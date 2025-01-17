@@ -1,0 +1,63 @@
+{
+    "env": {
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
+        "plugin:jsx-a11y/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint-config-prettier",
+        "prettier"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "requireConfigFile": false, // Add this line to avoid the need for a separate Babel config file
+        "babelOptions": {
+            "presets": ["@babel/preset-react", "@babel/preset-typescript"] // You can customize this based on your needs
+        },
+        "project": "./tsconfig.json", // Add this line
+        "tsconfigRootDir": "./" // Optional: specify the root directory for the tsconfig
+    },
+    "plugins": ["react", "prettier", "@typescript-eslint"],
+    "settings": {
+        "import/resolver": {
+            "node": {},
+            "typescript": {}
+        },
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "react/jsx-no-target-blank": "warn",
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "eqeqeq": "error",
+        "no-nested-ternary": "error",
+        "require-await": "error",
+        "no-console": "error",
+        "prettier/prettier": [
+            "error",
+            {
+                "$schema": "https://json.schemastore.org/prettierrc.json",
+                "plugins": ["prettier-plugin-tailwindcss"],
+                "arrowParens": "always",
+                "semi": true,
+                "trailingComma": "all",
+                "tabWidth": 2,
+                "endOfLine": "auto",
+                "useTabs": false,
+                "singleQuote": false,
+                "printWidth": 80
+            }
+        ],
+        "@typescript-eslint/no-duplicate-enum-values": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "react/jsx-uses-vars": "warn"
+    }
+}

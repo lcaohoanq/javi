@@ -1,0 +1,77 @@
+networks:
+    dev_networks:
+        driver: bridge
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres_web_development
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: Iloveyou123!
+            POSTGRES_DB: web_company_dev
+        networks:
+            - dev_networks
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        container_name: pgadmin_web_development
+        environment:
+            PGADMIN_DEFAULT_EMAIL: hoangclw@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: password
+        networks:
+            - dev_networks
+        ports:
+            - "80:80"
+        depends_on:
+            - postgres
+
+    redis-container:
+        image: docker.io/redis:7.2.3
+        container_name: redis_web_development
+        restart: always
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./redis-data:/data # Mount a volume for Redis data persistence
+        networks:
+            - dev_networks
+
+#    prometheus:
+#        image: prom/prometheus
+#        container_name: prometheus_web_development
+#        ports:
+#            - "9090:9090"
+#        restart: unless-stopped
+#        volumes:
+#            - ./config/prometheus:/etc/prometheus
+#        networks:
+#            - dev_networks
+#        extra_hosts:
+#            - "host.docker.internal:host-gateway"
+
+# connection Prometheus server URL
+# http://prometheus:9090(prometheus is the service name)
+# not use localhost because localhost refer to grafana itself
+#    grafana:
+#        image: grafana/grafana
+#        container_name: grafana_web_development
+#        ports:
+#            - "3001:3000"
+#        environment:
+#            - GF_SECURITY_ADMIN_USER=sysadmin
+#            - GF_SECURITY_ADMIN_PASSWORD=sysadmin
+#        volumes:
+#            - grafana_data:/var/lib/grafana
+#        networks:
+#            - dev_networks
+
+volumes:
+    postgres_data:
+        driver: local
+#    grafana_data:
+#        driver: local
