@@ -1,0 +1,125 @@
+// Define type for product headers in English
+type ProductHeadersEN =
+  | 'id'
+  | 'Name'
+  | 'Model'
+  | 'Description'
+  | 'Price'
+  | 'Stock Quantity'
+  | 'Warranty'
+  | 'Weight'
+  | 'Dimensions'
+  | 'Power'
+  | 'Color'
+  | 'Manufacturer';
+
+// Define type for product headers in Vietnamese
+type ProductHeadersVN =
+  | 'id'
+  | 'Tên'
+  | 'Model'
+  | 'Mô tả'
+  | 'Giá'
+  | 'Số lượng tồn kho'
+  | 'Bảo hành'
+  | 'Khối lượng'
+  | 'Kích thước'
+  | 'Công suất'
+  | 'Màu sắc'
+  | 'Nhà sản xuất';
+
+// Define type for employee headers in English
+type EmployeeHeadersEN =
+  | 'id'
+  | 'Full Name'
+  | 'Email'
+  | 'Gender'
+  | 'Phone Number'
+  | 'Address'
+  | 'Position'
+  | 'Department';
+
+// Define type for employee headers in Vietnamese
+type EmployeeHeadersVN =
+  | 'id'
+  | 'Họ tên'
+  | 'Email'
+  | 'Giới tính'
+  | 'Số điện thoại'
+  | 'Địa chỉ'
+  | 'Chức vụ'
+  | 'Phòng ban';
+
+// Define the types for product and employee file types
+type ProductFileType = ProductHeadersEN | ProductHeadersVN;
+type EmployeeFileType = EmployeeHeadersEN | EmployeeHeadersVN;
+
+type FileEmployeeType = 'Employee_EN' | 'Employee_VN';
+
+// Define the headers for each file type
+type HeadersByFileEmployeeType = {
+  [key in FileEmployeeType]: EmployeeFileType[];
+};
+
+// Define the headers for each file type
+const headersByEmployeeFile: HeadersByFileEmployeeType = {
+  Employee_EN: [
+    'id',
+    'Full Name',
+    'Email',
+    'Gender',
+    'Phone Number',
+    'Address',
+    'Position',
+    'Department',
+  ],
+  Employee_VN: [
+    'id',
+    'Họ tên',
+    'Email',
+    'Giới tính',
+    'Số điện thoại',
+    'Địa chỉ',
+    'Chức vụ',
+    'Phòng ban',
+  ],
+};
+
+type FileProductType = 'Product_EN' | 'Product_VN';
+
+// Define the headers for each file type
+type HeadersByFileProductType = {
+  [key in FileProductType]: ProductFileType[];
+};
+
+// Define the headers for each file type
+const headersByProductFile: HeadersByFileProductType = {
+  Product_EN: [
+    'id',
+    'Name',
+    'Model',
+    'Description',
+    'Price',
+    'Stock Quantity',
+    'Warranty',
+    'Weight',
+    'Dimensions',
+    'Power',
+    'Color',
+    'Manufacturer',
+  ],
+  Product_VN: [
+    'id',
+    'Tên',
+    'Model',
+    'Mô tả',
+    'Giá',
+    'Số lượng tồn kho',
+    'Bảo hành',
+    'Khối lượng',
+    'Kích thước',
+    'Công suất',
+    'Màu sắc',
+    'Nhà sản xuất',
+  ],
+};
