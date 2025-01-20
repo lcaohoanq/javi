@@ -1,5 +1,3 @@
-# book.graphqls
-
 type Book {
     id: ID
     name: String
@@ -7,7 +5,27 @@ type Book {
     author: Author
 }
 
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    currentPage: Int!
+    totalPages: Int!
+}
+
+type BookConnection {
+    nodes: [Book!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+input PageInput {
+    page: Int! = 1
+    size: Int! = 10
+}
+
 extend type Query {
     books: [Book]
     bookById(id: Int): Book
+    paginatedBooks(pageInput: PageInput!): BookConnection!
+    paginatedBooksWithCursor(first: Int!, after: String): BookConnection!
 }
