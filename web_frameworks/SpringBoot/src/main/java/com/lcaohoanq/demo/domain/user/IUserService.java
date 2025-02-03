@@ -1,8 +1,9 @@
 package com.lcaohoanq.demo.domain.user;
 
+
 public interface IUserService {
-
-    void save(User user);
-    User isExist(String userId);
-
+    User create(UserDTO userDTO);
+    User update(Long id, UserDTO userDTO);
+    void delete(Long id);
+    User findById(Long id);
 }

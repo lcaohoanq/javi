@@ -1,21 +1,45 @@
 package com.lcaohoanq.demo.domain.user;
 
+import com.lcaohoanq.demo.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
-public class UserService implements IUserService{
+@RequiredArgsConstructor
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    @Transactional
+    public User create(UserDTO userDTO) {
+        User user = User.builder()
+            .username(userDTO.username())
+            .password(userDTO.password())
+            .build();
+        return userRepository.save(user);
     }
 
     @Override
-    public User isExist(String userId) {
-        return userRepository.findById(userId).orElseThrow();
+    @Transactional
+    public User update(Long id, UserDTO userDTO) {
+        User existingUser = findById(id);
+        existingUser.setUsername(userDTO.username());
+        existingUser.setPassword(userDTO.password());
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        User user = findById(id);
+        userRepository.delete(user);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 }

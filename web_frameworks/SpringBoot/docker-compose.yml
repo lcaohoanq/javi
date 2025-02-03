@@ -1,13 +1,53 @@
+networks:
+  my_network:
+    driver: bridge
+
 services:
   db:
     image: lcaohoanq/sample-mysql-db:2.0
     container_name: demo-crud-springboot-application
     ports:
-      - "3311:3306"
+      - "3311:3306"  # Host port 3311 -> Container port 3306 (MySQL)
     env_file:
-      - .env
+      - .env          # Include your MySQL environment variables here
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql  # Persistent volume for MySQL data
+    networks:
+      - my_network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "--password=Luucaohoang1604^^",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  springboot-app:
+    container_name: springboot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    networks:
+      - my_network
+    ports:
+      - "8080:8080"   # Host port 8080 -> Container port 8080 (Spring Boot)
+    depends_on:
+      - db            # Ensure Spring Boot app waits for MySQL to be ready
+    env_file:
+      - .env          # Use the same .env file for database credentials
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE} # Use the MySQL service name as the hostname
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
 
 volumes:
-  db_data:
+  db_data:  # Docker volume to persist MySQL data
