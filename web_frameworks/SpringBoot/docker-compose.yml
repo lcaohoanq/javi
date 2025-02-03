@@ -5,7 +5,7 @@ networks:
 services:
   db:
     image: lcaohoanq/sample-mysql-db:2.0
-    container_name: demo-crud-springboot-application
+    container_name: mysql-db
     ports:
       - "3311:3306"  # Host port 3311 -> Container port 3306 (MySQL)
     env_file:
@@ -48,6 +48,29 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE} # Use the MySQL service name as the hostname
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+  
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"  # Expose Nginx on port 80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Custom Nginx configuration file
+    depends_on:
+      - springboot-app
+    networks:
+      - my_network
+      
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9443:9443"
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
 volumes:
   db_data:  # Docker volume to persist MySQL data
+  data:     # Docker volume to persist Portainer data
