@@ -1,4 +1,4 @@
-package com.lcaohoanq.demo.file;
+package com.lcaohoanq.demo.domain.file;
 
 import java.io.IOException;
 import java.nio.file.Files;

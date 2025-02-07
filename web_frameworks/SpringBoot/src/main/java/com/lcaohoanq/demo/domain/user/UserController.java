@@ -34,7 +34,7 @@ public class UserController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size)
     {
-        return ResponseEntity.ok(userRepository.findAll(PageRequest.of(page, size)));
+        return ResponseEntity.ok(userRepository.findAll(PageRequest.of(page, size)).getContent());
     }
     
     @Operation(
@@ -100,6 +100,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
