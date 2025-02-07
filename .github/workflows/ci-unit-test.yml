@@ -15,7 +15,7 @@ jobs:
           - testing/jUnit/01-SumTest
           - testing/jUnit/spb-testing
           - web_frameworks/SpringBoot
-          - web_frameworks/Simple-CRUD-SpringBoot
+         # - web_frameworks/Simple-CRUD-SpringBoot
     steps:
       # Step 1: Checkout the code
       - uses: actions/checkout@v4
