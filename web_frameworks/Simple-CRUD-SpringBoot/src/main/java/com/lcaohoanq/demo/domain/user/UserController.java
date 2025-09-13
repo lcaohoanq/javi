@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final UserRepository userRepository;
     
     @GetMapping("")
@@ -32,14 +32,14 @@ public class UserController {
     
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        User user = userService.findById(id);
+        User user = userServiceImpl.findById(id);
         return ResponseEntity.ok(user);
     }
     
     @PostMapping("/register")
     public ResponseEntity<User> createUser(
         @Valid @RequestBody UserDTO userDTO) {
-        User createdUser = userService.create(userDTO);
+        User createdUser = userServiceImpl.create(userDTO);
         return ResponseEntity.ok().body(createdUser);
     }
     
@@ -47,13 +47,13 @@ public class UserController {
     public ResponseEntity<User> updateUser(
         @PathVariable Long id,
         @Valid @RequestBody UserDTO userDTO) {
-        User updatedUser = userService.update(id, userDTO);
+        User updatedUser = userServiceImpl.update(id, userDTO);
         return ResponseEntity.ok(updatedUser);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+        userServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
