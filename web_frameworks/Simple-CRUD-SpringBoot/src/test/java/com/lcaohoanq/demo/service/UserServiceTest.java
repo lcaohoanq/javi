@@ -151,6 +151,62 @@ public class UserServiceTest {
     }
 
     @Test
+    public void update_shouldReturnUser_whenValid() {
+        // given
+        var inputId = 1L;
+        var inputUser = new User(1L, "hoang", "hoang@gmail.com", "hoangclw", "123456");
+        var updateUserDTO = new UserDTO("hoang@gmail.com", "mnhw.0612", "newpassword");
+        var outputUser = new User(1L, "hoang", "hoang@gmail.com", "mnhw.0612", "newpassword");
+
+        when(this.userRepository.findById(inputId)).thenReturn(Optional.of(inputUser));
+        when(this.userRepository.save(any(User.class))).thenReturn(outputUser);
+
+        // when
+        var result = this.userService.update(inputId, updateUserDTO);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getLogin()).isEqualTo("mnhw.0612");
+        assertThat(result.getPassword()).isEqualTo("newpassword");
+        assertThat(result.getEmail()).isEqualTo("hoang@gmail.com");
+
+        verify(userRepository, times(1)).findById(inputId);
+        verify(userRepository, times(1)).save(any(User.class));
+
+        /*
+        * Tai sao phai verify?
+        * - De dam bao cac phuong thuc tren repository duoc goi dung so lan mong muon.
+        * - Neu khong verify, co the co loi trong code ma ban khong biet.
+        * - Giup code test chac chan hon, giam thiieu loi do code test
+        *
+        *
+        * userService.update(...) internally calls userRepository.save(user).
+
+        The verify statement makes sure this really happened.
+
+        So:
+
+        verify(userRepository, times(1)).findById(inputId);
+        → confirms that findById was called once with inputId.
+
+        verify(userRepository, times(1)).save(any(User.class));
+        → confirms that save(...) was called once, with some User object (you don’t care which instance exactly, that’s why you used any(User.class)).
+        *
+        * Without verify, you’re only checking the output of update.
+        With verify, you also check the behavior:
+
+        That the repository methods were called.
+
+        That they were called the correct number of times.
+
+        (Optionally) with the right arguments.
+        *
+        * */
+    }
+
+
+    @Test
     public void update_shouldUpdateFields_whenUserExists() {
         var existingUser = new User(1L, "hoang", "hoang@gmail.com", "hoangclw", "123456");
         var updateUserDTO = new UserDTO("mnhw.0612@gmail.com", "newlogin", "newpassword");

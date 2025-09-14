@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
     public User update(Long id, UserDTO userDTO) {
         return userRepository.findById(id)
             .map(user -> {
+                user.setEmail(userDTO.email());
                 user.setLogin(userDTO.login());
                 user.setPassword(userDTO.password());
                 return userRepository.save(user);
