@@ -5,10 +5,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public record UserDTO(
-    @JsonProperty("username")
+    @JsonProperty("email")
+    @NotEmpty(message = "Email is required")
+    String email,
+
+    @JsonProperty("login")
     @NotEmpty(message = "Username is required")
     @Size(min = 6, max = 20)
-    String username,
+    String login,
 
     @JsonProperty("password")
     @NotEmpty(message = "Password is required")

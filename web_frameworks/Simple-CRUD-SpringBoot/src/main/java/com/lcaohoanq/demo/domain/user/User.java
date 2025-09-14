@@ -24,8 +24,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
-    private Long userId;
-    private String username;
+    private Long id;
+    private String name;
+    private String email;
+    private String login; //jhipster convention for login field
     private String password;
 
 }
