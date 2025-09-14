@@ -36,14 +36,17 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User user = service.findById(id);
+        if(user == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(user);
     }
     
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<User> createUser(
         @Valid @RequestBody UserDTO userDTO) {
         User createdUser = service.create(userDTO);
-        return ResponseEntity.ok().body(createdUser);
+        return ResponseEntity.status(201).body(createdUser);
     }
     
     @PutMapping("/{id}")

@@ -1,0 +1,31 @@
+### Get all users
+GET http://localhost:8080/api/users
+
+### Get paged users
+GET http://localhost:8080/api/users/paged?page=0&size=10
+
+### Get user by ID
+GET http://localhost:8080/api/users/1
+
+### Register a new user
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "login": "testuser",
+  "email": "testuser@example.com",
+  "password": "password123"
+}
+
+### Update user
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+
+{
+  "login": "updateduser",
+  "email": "updateduser@example.com",
+  "password": "newpassword123"
+}
+
+### Delete user
+DELETE http://localhost:8080/api/users/1
